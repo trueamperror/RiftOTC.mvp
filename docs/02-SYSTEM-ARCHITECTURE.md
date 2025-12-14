@@ -76,7 +76,7 @@
 | Framework | Next.js | 15.0 | React framework with App Router |
 | Language | TypeScript | 5.x | Type safety |
 | Styling | Tailwind CSS | 4.x | Utility-first CSS |
-| Components | shadcn/ui | latest | UI components |
+| Components | shadcn/ui + CyberUI | latest | UI components & Custom Cyberpunk Theme |
 | Charts | Recharts | 2.x | Interactive data visualization |
 | Markdown | react-markdown | 9.x | AI response formatting |
 | State | React useState | - | Local state |
@@ -505,6 +505,7 @@ interface CreateDealRequest {
 200 - OK
 400 - Bad Request (validation errors)
 404 - Not Found (deal/token not found)
+429 - Too Many Requests (External API rate limit)
 500 - Internal Server Error
 
 # Error Response Format:

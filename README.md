@@ -9,9 +9,10 @@ The Rift OTC Module enables discounted token trading with short-term lock period
 - **AI Token Analysis**: GPT-4o powered scoring across 5 dimensions (Technical, Risk, Sentiment, On-Chain, Fundamental)
 - **Interactive AI Chat**: Ask follow-up questions about any token. Beginner-friendly explanations.
 - **1-Year Price Charts**: Interactive Recharts-based visualization with tooltips.
-- **Deal Management**: Create, browse, and accept OTC deals with automatic AI analysis
-- **Risk Assessment**: Comprehensive risk/reward calculations and AI-suggested discounts
-- **Mock Wallet UI**: Simulates "Connect Wallet" flow for demo purposes
+- **Cyberpunk UI**: Polished "Cyber" aesthetic with custom animations, loaders, and success effects.
+- **Deal Management**: Create, browse, and accept OTC deals with automatic AI analysis.
+- **Robust Error Handling**: Graceful degradation when external APIs (CoinGecko) are rate-limited.
+- **Mock Wallet UI**: Simulates "Connect Wallet" flow for demo purposes.
 
 ## Project Structure
 

@@ -1,0 +1,89 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e6]: 12:58:00
+    - generic [ref=e8]:
+      - link "RIFT Portal RIFT_OTC" [ref=e9] [cursor=pointer]:
+        - /url: /
+        - img "RIFT Portal" [ref=e12]
+        - generic [ref=e15]: RIFT_OTC
+      - generic [ref=e16]:
+        - button "WALLET" [ref=e17]:
+          - generic [ref=e18]: WALLET
+        - button [ref=e19]:
+          - img
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - heading "Create OTC Deal" [level=1] [ref=e23]
+        - paragraph [ref=e24]: Sell your tokens at a discount for immediate liquidity
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: Token to Sell
+          - generic [ref=e31]:
+            - img [ref=e32]
+            - textbox "Search for a token..." [ref=e35]: Bitcoin
+          - generic [ref=e40]:
+            - generic [ref=e41]:
+              - img "btc" [ref=e43]
+              - generic [ref=e44]:
+                - paragraph [ref=e45]: Bitcoin
+                - paragraph [ref=e46]: BTC
+            - generic [ref=e47]:
+              - paragraph [ref=e48]: $90,181.00
+              - paragraph [ref=e49]: Current Price
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]: Amount of Tokens
+            - generic [ref=e53]: 10 tokens
+          - spinbutton "Amount of Tokens" [ref=e54]: "10"
+          - slider [ref=e59]
+        - generic [ref=e60]:
+          - generic [ref=e61]: Lock Period
+          - generic [ref=e62]:
+            - button "1 Week Min Lock" [ref=e63]:
+              - generic [ref=e64]: 1 Week
+              - generic [ref=e65]: Min Lock
+            - button "4 Weeks Mid Lock" [ref=e66]:
+              - generic [ref=e67]: 4 Weeks
+              - generic [ref=e68]: Mid Lock
+            - button "8 Weeks Max Lock" [ref=e69]:
+              - generic [ref=e70]: 8 Weeks
+              - generic [ref=e71]: Max Lock
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - generic [ref=e74]: Discount
+            - generic [ref=e75]: 8%
+          - slider [ref=e80]
+          - generic [ref=e81]:
+            - generic [ref=e82]: 5%
+            - 'button "✨ Apply AI Suggestion: 8%" [ref=e83]'
+            - generic [ref=e84]: 40%
+      - generic [ref=e85]:
+        - generic [ref=e87]: Deal Summary
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - paragraph [ref=e91]: Market Price
+              - paragraph [ref=e92]: $90,181.00
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: Your Price (8% off)
+              - paragraph [ref=e95]: $82,966.52
+            - generic [ref=e96]:
+              - paragraph [ref=e97]: Market Value
+              - paragraph [ref=e98]: $901,810.00
+            - generic [ref=e99]:
+              - paragraph [ref=e100]: You Receive
+              - paragraph [ref=e101]: $829,665.20
+          - generic [ref=e102]:
+            - paragraph [ref=e103]: Buyer's Instant Savings
+            - paragraph [ref=e104]: +$72,144.80
+            - paragraph [ref=e105]: 8% discount locked for 4 weeks
+          - generic [ref=e107]:
+            - generic [ref=e108]: AI Score
+            - generic [ref=e109]: 5.2/10 - HOLD
+          - button "Creating Deal..." [disabled]
+  - alert [ref=e110]
+```

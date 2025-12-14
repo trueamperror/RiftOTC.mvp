@@ -1,24 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CyberCard } from "@/components/cyber-card";
+import { CyberButton } from "@/components/cyber-button";
+import { MatrixBackground } from "@/components/matrix-background";
+import { LockPeriodSelector } from "@/components/lock-period-selector";
 import { TokenSearch } from "@/components/TokenSearch";
 import { ScoreBreakdown } from "@/components/ScoreBar";
 import { RiskBadge } from "@/components/RiskBadge";
 import { analyzeToken } from "@/lib/api";
 import { TokenAnalysis, TokenSearchResult } from "@/types";
 import { cn } from "@/lib/utils";
-import { Sparkline } from "@/components/Sparkline";
 import { PriceChart } from "@/components/PriceChart";
 import { ChatInterface } from "@/components/ChatInterface";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Terminal, Cpu, ArrowRight, Shield, Zap } from "lucide-react";
+import { StatsCard } from "@/components/stats-card";
+import NextImage from "next/image";
 
-const lockPeriods = [
-  { value: 1, label: "1 Week", description: "Lower risk, lower discount" },
-  { value: 4, label: "4 Weeks", description: "Balanced risk/reward" },
-  { value: 8, label: "8 Weeks", description: "Higher discount, more exposure" },
+const lockPeriodOptions = [
+  { label: "1 Week", value: "1", description: "Lower risk, lower discount", riskLevel: "low" as const },
+  { label: "4 Weeks", value: "4", description: "Balanced risk/reward", riskLevel: "medium" as const },
+  { label: "8 Weeks", value: "8", description: "Higher discount, more exposure", riskLevel: "high" as const },
 ];
 
 function formatCurrency(num: number): string {
@@ -30,18 +33,20 @@ function formatCurrency(num: number): string {
 
 export default function AnalyzePage() {
   const [selectedToken, setSelectedToken] = useState<TokenSearchResult | null>(null);
-  const [lockPeriod, setLockPeriod] = useState<number>(4);
+  const [lockPeriod, setLockPeriod] = useState<string>("4");
   const [analysis, setAnalysis] = useState<TokenAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
 
   const handleAnalyze = async () => {
     if (!selectedToken) return;
 
     setIsLoading(true);
     setError(null);
+    setShowChat(false);
     try {
-      const result = await analyzeToken(selectedToken.id, lockPeriod);
+      const result = await analyzeToken(selectedToken.id, parseInt(lockPeriod));
       setAnalysis(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to analyze token");
@@ -52,114 +57,125 @@ export default function AnalyzePage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">AI Token Analyzer</h1>
-        <p className="text-muted-foreground">
-          Get AI-powered analysis for short-term OTC deal opportunities
-        </p>
-      </div>
+    <div className="min-h-screen relative text-foreground font-mono">
+      <MatrixBackground />
+      {/* Header is now in global layout */}
 
-      {/* Search Form */}
-      <Card className="bg-card border-border">
-        <CardContent className="pt-6 space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="token">Token</Label>
-            <TokenSearch
-              onSelect={(token) => {
-                setSelectedToken(token);
-                setAnalysis(null);
-              }}
-              placeholder="Search for a token (e.g., Uniswap, Arbitrum)..."
-            />
-            {selectedToken && (
-              <p className="text-sm text-muted-foreground">
-                Selected: {selectedToken.name} ({selectedToken.symbol.toUpperCase()})
-              </p>
-            )}
-          </div>
 
-          <div className="space-y-2">
-            <Label>Lock Period</Label>
-            <div className="grid grid-cols-3 gap-3">
-              {lockPeriods.map((period) => (
-                <button
-                  key={period.value}
-                  onClick={() => setLockPeriod(period.value)}
-                  className={cn(
-                    "p-4 rounded-lg border text-left transition-colors",
-                    lockPeriod === period.value
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/50"
-                  )}
-                >
-                  <div className="font-semibold">{period.label}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {period.description}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <Button
-            onClick={handleAnalyze}
-            disabled={!selectedToken || isLoading}
-            className="w-full"
-            size="lg"
+      <main className="relative z-10 container mx-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-8">
+        {/* Token Search Section */}
+        <section className="max-w-2xl mx-auto">
+          <CyberCard
+            glowColor="blue"
+            header={
+              <div className="flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-primary" />
+                <span className="font-mono text-sm">AI_TOKEN_ANALYZER_v2.4</span>
+              </div>
+            }
           >
-            {isLoading ? "Analyzing..." : "Analyze Token"}
-          </Button>
-        </CardContent>
-      </Card>
+            <div className="text-center mb-8">
+              <h1 className="text-2xl md:text-3xl font-bold font-mono mb-2">
+                AI Token <span className="text-primary">Analyzer</span>
+              </h1>
+              <p className="text-muted-foreground font-mono text-sm">
+                Get AI-powered analysis for short-term OTC deal opportunities
+              </p>
+            </div>
 
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-xs font-mono text-muted-foreground uppercase tracking-wider">Token</label>
+                <div className="relative">
+                  {/* Integrated TokenSearch with custom styling wrapper if needed, 
+                        assuming TokenSearch renders an Input that we might want to style or replaces CyberInput 
+                    */}
+                  <TokenSearch
+                    onSelect={(token) => {
+                      setSelectedToken(token);
+                      setAnalysis(null);
+                    }}
+                    placeholder="Search for a token (e.g., Uniswap, Arbitrum)..."
+                  // passing class to match CyberInput style if TokenSearch uses standard Input
+                  />
+                </div>
+                {selectedToken && (
+                  <div className="flex items-center gap-2 text-xs text-primary animate-pulse">
+                    <Zap className="w-3 h-3" />
+                    Selected: {selectedToken.name} ({selectedToken.symbol.toUpperCase()})
+                  </div>
+                )}
+              </div>
 
-      {/* Analysis Results */}
-      {analysis && (
-        <div className="space-y-6">
-          <Card className="bg-card border-border">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {/* Token Icon */}
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+              <LockPeriodSelector
+                options={lockPeriodOptions}
+                selected={lockPeriod}
+                onChange={setLockPeriod}
+              />
+
+              <CyberButton
+                variant="primary"
+                className="w-full min-h-[48px]"
+                size="lg"
+                onClick={handleAnalyze}
+                loading={isLoading}
+                disabled={!selectedToken}
+              >
+                <Cpu className="w-4 h-4" />
+                Analyze Token
+                <ArrowRight className="w-4 h-4" />
+              </CyberButton>
+            </div>
+          </CyberCard>
+        </section>
+
+        {error && (
+          <Alert variant="destructive" className="max-w-2xl mx-auto bg-destructive/10 border-destructive/50 text-destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Analysis Results */}
+        {analysis && (
+          <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <CyberCard glowColor="cyan" className="overflow-hidden">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
+                <div className="flex items-center gap-4 w-full md:w-auto">
+                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border-2 border-primary/50 shadow-[0_0_15px_rgba(0,212,255,0.3)]">
                     {analysis.image && (
-                      <img
+                      <NextImage
                         src={analysis.image}
                         alt={analysis.token_name}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                        crossOrigin="anonymous"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     )}
                     {!analysis.image && (
-                      <span className="font-bold text-lg text-primary">
+                      <span className="font-bold text-2xl text-primary">
                         {analysis.token_symbol.charAt(0).toUpperCase()}
                       </span>
                     )}
                   </div>
-                  {/* Token Info */}
                   <div>
-                    <CardTitle className="text-2xl">
+                    <h2 className="text-3xl font-bold font-mono">
                       {analysis.token_name}
-                      <span className="text-muted-foreground ml-2 text-lg font-normal">
-                        ({analysis.token_symbol.toUpperCase()})
+                      <span className="text-primary ml-2 text-xl">
+                        {analysis.token_symbol.toUpperCase()}
                       </span>
-                    </CardTitle>
-                    <div className="flex items-center gap-4 text-muted-foreground mt-1">
-                      <span className="text-foreground font-medium">
+                    </h2>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-mono text-muted-foreground mt-1">
+                      <span className="text-foreground font-bold text-base">
                         ${analysis.current_price.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 6,
                         })}
                       </span>
                       {analysis.market_cap && (
-                        <span>MC: {formatCurrency(analysis.market_cap)}</span>
+                        <span className="flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-muted-foreground" />
+                          MC: {formatCurrency(analysis.market_cap)}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -169,54 +185,94 @@ export default function AnalyzePage() {
                   size="lg"
                 />
               </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Score Breakdown */}
-              <div>
-                <h3 className="font-semibold mb-4">Score Breakdown</h3>
-                <ScoreBreakdown scores={analysis.scores} />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Score Breakdown */}
+                <div>
+                  <h3 className="font-mono font-semibold mb-4 text-primary flex items-center gap-2">
+                    <Activity className="w-4 h-4" /> Score Breakdown
+                  </h3>
+                  <div className="bg-background/30 rounded-lg p-4 border border-border/50">
+                    <ScoreBreakdown scores={analysis.scores} />
+                  </div>
+                </div>
+
+
+
+                {/* Overall Score & Chat Access */}
+                <div className="flex flex-col justify-center space-y-4">
+                  <div className="relative p-6 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 text-center">
+                    <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary/50" />
+                    <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary/50" />
+                    <div className="text-sm font-mono text-muted-foreground mb-2 uppercase tracking-widest">
+                      AI Confidence Score
+                    </div>
+                    <div className="text-5xl font-bold text-primary font-mono tabular-nums">
+                      {analysis.scores.overall.toFixed(1)}
+                      <span className="text-xl text-primary/50">/10</span>
+                    </div>
+                  </div>
+
+                  {/* Quick Chat Access Button */}
+                  <CyberButton
+                    variant="secondary"
+                    className="w-full min-h-[48px]"
+                    icon={<Terminal className="w-4 h-4" />}
+                    onClick={() => {
+                      setShowChat(true);
+                      // Optional: scroll to chat if it wasn't visible
+                      setTimeout(() => {
+                        const chatSection = document.getElementById('chat-interface-section');
+                        chatSection?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
+                  >
+                    Ask AI Assistant
+                  </CyberButton>
+                </div>
               </div>
 
               {/* Price Chart */}
               {analysis.price_history_1y && analysis.price_history_1y.length > 0 && (
-                <PriceChart
-                  data={analysis.price_history_1y}
-                  symbol={analysis.token_symbol}
-                />
+                <div className="mt-8 pt-8 border-t border-border/50">
+                  <h3 className="font-mono font-semibold mb-4 text-primary flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" /> Price History (1Y)
+                  </h3>
+                  <div className="h-[300px] w-full bg-background/30 rounded-lg border border-border/50 p-4">
+                    <PriceChart
+                      data={analysis.price_history_1y}
+                      symbol={analysis.token_symbol}
+                    />
+                  </div>
+                </div>
               )}
 
-              {/* Overall Score Display */}
-              <div className="p-4 rounded-lg bg-secondary/50 text-center">
-                <div className="text-sm text-muted-foreground mb-1">
-                  Overall Score
-                </div>
-                <div className="text-4xl font-bold">
-                  {analysis.scores.overall.toFixed(1)}
-                  <span className="text-lg text-muted-foreground">/10</span>
-                </div>
-              </div>
-
               {/* Expected Returns */}
-              <div>
-                <h3 className="font-semibold mb-4">Expected Return ({lockPeriod} week lock)</h3>
+              <div className="mt-8">
+                <h3 className="font-mono font-semibold mb-4 text-primary flex items-center gap-2">
+                  <Zap className="w-4 h-4" /> Expected Return ({lockPeriodOptions.find((p: any) => p.value === lockPeriod)?.label} lock)
+                </h3>
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-center">
-                    <div className="text-sm text-muted-foreground">Bear Case</div>
-                    <div className="text-xl font-bold text-red-400">
+                  <div className="p-4 rounded-lg bg-red-500/5 border border-red-500/20 text-center relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="text-xs font-mono text-muted-foreground uppercase mb-1">Bear Case</div>
+                    <div className="text-xl font-bold font-mono text-red-400">
                       {analysis.expected_return.low > 0 ? "+" : ""}
                       {analysis.expected_return.low.toFixed(1)}%
                     </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-center">
-                    <div className="text-sm text-muted-foreground">Expected</div>
-                    <div className="text-xl font-bold text-primary">
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/20 text-center relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="text-xs font-mono text-primary uppercase mb-1">Expected</div>
+                    <div className="text-2xl font-bold font-mono text-primary animate-pulse-glow">
                       {analysis.expected_return.mid > 0 ? "+" : ""}
                       {analysis.expected_return.mid.toFixed(1)}%
                     </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-center">
-                    <div className="text-sm text-muted-foreground">Bull Case</div>
-                    <div className="text-xl font-bold text-green-400">
+                  <div className="p-4 rounded-lg bg-green-500/5 border border-green-500/20 text-center relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="text-xs font-mono text-muted-foreground uppercase mb-1">Bull Case</div>
+                    <div className="text-xl font-bold font-mono text-green-400">
                       +{analysis.expected_return.high.toFixed(1)}%
                     </div>
                   </div>
@@ -225,57 +281,112 @@ export default function AnalyzePage() {
 
               {/* Key Risks */}
               {analysis.key_risks.length > 0 && (
-                <div>
-                  <h3 className="font-semibold mb-4">Key Risks</h3>
-                  <ul className="space-y-2">
+                <div className="mt-8">
+                  <h3 className="font-mono font-semibold mb-4 text-destructive flex items-center gap-2">
+                    <Shield className="w-4 h-4" /> Detected Risks
+                  </h3>
+                  <div className="grid gap-2">
                     {analysis.key_risks.map((risk, index) => (
-                      <li
+                      <div
                         key={index}
-                        className="flex items-start gap-2 p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/10"
+                        className="flex items-start gap-3 p-3 rounded bg-destructive/10 border border-destructive/20 text-sm font-mono"
                       >
-                        <span className="text-yellow-500 mt-0.5">⚠️</span>
-                        <span>{risk}</span>
-                      </li>
+                        <span className="text-destructive mt-0.5">⚠️</span>
+                        <span className="text-destructive-foreground/90">{risk}</span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )}
+            </CyberCard>
 
-              {/* AI Reasoning */}
-              <div>
-                <h3 className="font-semibold mb-2">AI Analysis</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {analysis.reasoning}
-                </p>
-              </div>
-
-              {/* Chat Interface */}
-              <div className="mt-8">
-                <ChatInterface tokenContext={analysis} />
-              </div>
-
-              {/* CTA */}
-              <div className="flex gap-4 pt-4 border-t border-border">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => {
-                    setSelectedToken(null);
-                    setAnalysis(null);
-                  }}
+            {/* Chat Interface Section */}
+            <div id="chat-interface-section" className="flex justify-center">
+              {!showChat ? (
+                <CyberButton
+                  variant="secondary"
+                  size="lg"
+                  icon={<Terminal className="w-4 h-4" />}
+                  onClick={() => setShowChat(true)}
                 >
-                  Analyze Another
-                </Button>
-                <Button className="flex-1" asChild>
-                  <a href={`/deals/create?token=${analysis.token_id}&lock=${lockPeriod}`}>
-                    Create Deal with {analysis.token_symbol.toUpperCase()}
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-    </div>
+                  Initialize AI Chat Interface
+                </CyberButton>
+              ) : (
+                <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <CyberCard glowColor="blue" header={<div className="font-mono text-sm">AI_CHANNEL_SECURE</div>}>
+                    <ChatInterface tokenContext={analysis} />
+                  </CyberCard>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 sm:pt-8 pb-12">
+              <CyberButton
+                variant="outline"
+                className="flex-1 min-h-[48px]"
+                onClick={() => {
+                  setSelectedToken(null);
+                  setAnalysis(null);
+                  setShowChat(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                Analyze Different Token
+              </CyberButton>
+              <CyberButton
+                className="flex-1 min-h-[48px]"
+                variant="primary"
+                icon={<Zap className="w-4 h-4" />}
+              >
+                <a href={`/deals/create?token=${analysis.token_id}&lock=${lockPeriod}`} className="w-full h-full flex items-center justify-center gap-2">
+                  Proceed to Deal Creation
+                </a>
+              </CyberButton>
+            </div>
+          </div>
+        )
+        }
+      </main >
+    </div >
   );
+}
+
+// Helper components for icons not imported
+function Activity(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </svg>
+  )
+}
+
+function TrendingUp(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+      <polyline points="16 7 22 7 22 13" />
+    </svg>
+  )
 }

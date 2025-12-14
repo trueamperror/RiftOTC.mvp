@@ -10,7 +10,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/ # Commented out as it blocks frontend/src/lib
+
 lib64/
 parts/
 sdist/

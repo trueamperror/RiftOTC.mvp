@@ -72,16 +72,17 @@ export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:800
         }
     };
 
+
     return (
-        <div className="flex flex-col h-[400px] bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+        <div className="flex flex-col h-[400px] bg-card/50 border border-border rounded-xl overflow-hidden font-mono">
             {/* Header */}
-            <div className="p-4 border-b border-zinc-800 bg-zinc-900 flex items-center gap-2">
-                <Bot className="w-5 h-5 text-indigo-400" />
-                <span className="font-semibold text-zinc-100">AI Analyst Chat</span>
+            <div className="p-4 border-b border-border bg-muted/20 flex items-center gap-2">
+                <Bot className="w-5 h-5 text-primary" />
+                <span className="font-semibold text-foreground">AI Analyst Chat</span>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
                 {messages.map((msg, idx) => (
                     <div
                         key={idx}
@@ -89,21 +90,21 @@ export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:800
                             }`}
                     >
                         <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === "user" ? "bg-indigo-600" : "bg-emerald-600"
+                            className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border border-border ${msg.role === "user" ? "bg-primary/20 text-primary" : "bg-secondary/50 text-secondary-foreground"
                                 }`}
                         >
                             {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
                         </div>
                         <div
                             className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === "user"
-                                ? "bg-indigo-600/20 text-indigo-100 border border-indigo-500/30 rounded-tr-sm"
-                                : "bg-zinc-800 text-zinc-300 border border-zinc-700 rounded-tl-sm"
+                                ? "bg-primary/10 text-foreground border border-primary/20 rounded-tr-sm"
+                                : "bg-card border border-border text-foreground rounded-tl-sm"
                                 }`}
                         >
                             {msg.role === "user" ? (
-                                msg.content
+                                <span className="text-foreground">{msg.content}</span>
                             ) : (
-                                <div className="prose prose-invert prose-sm max-w-none">
+                                <div className="prose prose-invert prose-sm max-w-none prose-p:text-foreground prose-a:text-primary">
                                     <ReactMarkdown>{msg.content}</ReactMarkdown>
                                 </div>
                             )}
@@ -112,14 +113,14 @@ export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:800
                 ))}
                 {isLoading && (
                     <div className="flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center shrink-0">
-                            <Bot size={16} />
+                        <div className="w-8 h-8 rounded-full bg-secondary/50 flex items-center justify-center shrink-0 border border-border">
+                            <Bot size={16} className="text-secondary-foreground" />
                         </div>
-                        <div className="bg-zinc-800 border border-zinc-700 px-4 py-2 rounded-2xl rounded-tl-sm">
+                        <div className="bg-card border border-border px-4 py-2 rounded-2xl rounded-tl-sm">
                             <div className="flex gap-1 h-5 items-center">
-                                <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                                <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                                <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" />
+                                <div className="w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                                <div className="w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                                <div className="w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce" />
                             </div>
                         </div>
                     </div>
@@ -133,7 +134,7 @@ export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:800
                     <button
                         key={preset}
                         onClick={() => handleSend(preset)}
-                        className="whitespace-nowrap px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-xs text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200 transition-colors"
+                        className="whitespace-nowrap px-3 py-1 rounded-full bg-secondary/30 border border-border text-xs text-muted-foreground hover:bg-primary/20 hover:text-primary hover:border-primary/50 transition-all font-mono"
                     >
                         {preset}
                     </button>
@@ -141,11 +142,11 @@ export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:800
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-zinc-800 bg-zinc-900/50">
+            <div className="p-4 border-t border-border bg-muted/10">
                 <div className="flex gap-2">
                     <input
                         type="text"
-                        className="flex-1 bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-zinc-100 placeholder-zinc-500"
+                        className="flex-1 bg-input/50 border border-border rounded-lg px-4 py-2 text-sm font-mono focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground placeholder:text-muted-foreground transition-all"
                         placeholder="Ask about the token..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -155,7 +156,7 @@ export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:800
                     <button
                         onClick={() => handleSend()}
                         disabled={isLoading || !input.trim()}
-                        className="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-lg transition-colors"
+                        className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-lg transition-colors shadow-[0_0_10px_rgba(0,212,255,0.2)]"
                     >
                         <Send size={18} />
                     </button>

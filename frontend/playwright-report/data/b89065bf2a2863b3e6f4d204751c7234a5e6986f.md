@@ -1,0 +1,216 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e6]: 12:58:03
+    - generic [ref=e8]:
+      - link "RIFT Portal RIFT_OTC" [ref=e9] [cursor=pointer]:
+        - /url: /
+        - img "RIFT Portal" [ref=e12]
+        - generic [ref=e15]: RIFT_OTC
+      - navigation [ref=e16]:
+        - link "DASHBOARD" [ref=e17] [cursor=pointer]:
+          - /url: /
+          - img [ref=e18]
+          - text: DASHBOARD
+        - link "AI_ANALYZER" [ref=e20] [cursor=pointer]:
+          - /url: /analyze
+          - img [ref=e21]
+          - text: AI_ANALYZER
+        - link "CREATE_DEAL" [ref=e23] [cursor=pointer]:
+          - /url: /deals/create
+          - img [ref=e24]
+          - text: CREATE_DEAL
+      - generic [ref=e26]:
+        - generic [ref=e29]: DEMO_MODE
+        - button "0x71C...9A21" [ref=e30]:
+          - generic [ref=e31]: 0x71C...9A21
+  - main [ref=e32]:
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - heading "AI-Powered OTC Trading" [level=1] [ref=e35]
+        - paragraph [ref=e36]: Get discounted tokens with AI-analyzed deals. Short-term locks, instant savings.
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e40]: Open Deals
+          - generic [ref=e41]:
+            - generic [ref=e42]: "5"
+            - paragraph [ref=e43]: Available for purchase
+        - generic [ref=e44]:
+          - generic [ref=e46]: Active Deals
+          - generic [ref=e47]:
+            - generic [ref=e48]: "0"
+            - paragraph [ref=e49]: Currently locked
+        - generic [ref=e50]:
+          - generic [ref=e52]: Completed
+          - generic [ref=e53]:
+            - generic [ref=e54]: "0"
+            - paragraph [ref=e55]: Successfully closed
+      - generic [ref=e56]:
+        - link "+ Create New Deal" [ref=e57] [cursor=pointer]:
+          - /url: /deals/create
+        - link "Open AI Analyzer" [ref=e58] [cursor=pointer]:
+          - /url: /analyze
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - tablist [ref=e62]:
+            - tab "Open" [selected] [ref=e63]
+            - tab "Active" [ref=e64]
+            - tab "Completed" [ref=e65]
+            - tab "All" [ref=e66]
+          - button "Refresh" [ref=e67]
+        - tabpanel "Open" [ref=e68]:
+          - generic [ref=e69]:
+            - generic [ref=e75] [cursor=pointer]:
+              - generic [ref=e76]:
+                - generic [ref=e77]:
+                  - generic [ref=e78]:
+                    - img "BTC" [ref=e80]
+                    - img [ref=e82]
+                  - generic [ref=e84]:
+                    - heading "Bitcoin" [level=3] [ref=e85]
+                    - paragraph [ref=e86]: "10"
+                - generic [ref=e87]:
+                  - generic [ref=e88]: OPEN
+                  - generic [ref=e89]: "-8%"
+              - generic [ref=e90]:
+                - img [ref=e91]
+                - generic [ref=e94]: "LOCK: 4 weeks"
+              - generic [ref=e95]:
+                - generic [ref=e96]:
+                  - paragraph [ref=e97]: Total Cost
+                  - paragraph [ref=e98]: $829,665.2
+                - generic [ref=e99]:
+                  - paragraph [ref=e100]: Market Value
+                  - generic [ref=e101]:
+                    - paragraph [ref=e102]: $901,810
+                    - img [ref=e103]
+              - generic [ref=e106]:
+                - link "View Details" [ref=e107]:
+                  - /url: /deals/deal_5491c3ec0360
+                  - button "View Details" [ref=e108]
+                - button "Cancel" [ref=e109]
+                - button "Accept Deal" [ref=e110]
+            - generic [ref=e117] [cursor=pointer]:
+              - generic [ref=e118]:
+                - generic [ref=e119]:
+                  - generic [ref=e120]:
+                    - img "BTC" [ref=e122]
+                    - img [ref=e124]
+                  - generic [ref=e126]:
+                    - heading "Bitcoin" [level=3] [ref=e127]
+                    - paragraph [ref=e128]: "10"
+                - generic [ref=e129]:
+                  - generic [ref=e130]: OPEN
+                  - generic [ref=e131]: "-7%"
+              - generic [ref=e132]:
+                - img [ref=e133]
+                - generic [ref=e136]: "LOCK: 4 weeks"
+              - generic [ref=e137]:
+                - generic [ref=e138]:
+                  - paragraph [ref=e139]: Total Cost
+                  - paragraph [ref=e140]: $838,701.9
+                - generic [ref=e141]:
+                  - paragraph [ref=e142]: Market Value
+                  - generic [ref=e143]:
+                    - paragraph [ref=e144]: $901,830
+                    - img [ref=e145]
+              - generic [ref=e148]:
+                - link "View Details" [ref=e149]:
+                  - /url: /deals/deal_53cd59ec5d07
+                  - button "View Details" [ref=e150]
+                - button "Cancel" [ref=e151]
+                - button "Accept Deal" [ref=e152]
+            - generic [ref=e159] [cursor=pointer]:
+              - generic [ref=e160]:
+                - generic [ref=e161]:
+                  - generic [ref=e162]:
+                    - img "BTC" [ref=e164]
+                    - img [ref=e166]
+                  - generic [ref=e168]:
+                    - heading "Bitcoin" [level=3] [ref=e169]
+                    - paragraph [ref=e170]: "10"
+                - generic [ref=e171]:
+                  - generic [ref=e172]: OPEN
+                  - generic [ref=e173]: "-7%"
+              - generic [ref=e174]:
+                - img [ref=e175]
+                - generic [ref=e178]: "LOCK: 4 weeks"
+              - generic [ref=e179]:
+                - generic [ref=e180]:
+                  - paragraph [ref=e181]: Total Cost
+                  - paragraph [ref=e182]: $838,701.9
+                - generic [ref=e183]:
+                  - paragraph [ref=e184]: Market Value
+                  - generic [ref=e185]:
+                    - paragraph [ref=e186]: $901,830
+                    - img [ref=e187]
+              - generic [ref=e190]:
+                - link "View Details" [ref=e191]:
+                  - /url: /deals/deal_5693f54b8e89
+                  - button "View Details" [ref=e192]
+                - button "Cancel" [ref=e193]
+                - button "Accept Deal" [ref=e194]
+            - generic [ref=e201] [cursor=pointer]:
+              - generic [ref=e202]:
+                - generic [ref=e203]:
+                  - generic [ref=e204]:
+                    - img "BTC" [ref=e206]
+                    - img [ref=e208]
+                  - generic [ref=e210]:
+                    - heading "Bitcoin" [level=3] [ref=e211]
+                    - paragraph [ref=e212]: "10"
+                - generic [ref=e213]:
+                  - generic [ref=e214]: OPEN
+                  - generic [ref=e215]: "-8%"
+              - generic [ref=e216]:
+                - img [ref=e217]
+                - generic [ref=e220]: "LOCK: 4 weeks"
+              - generic [ref=e221]:
+                - generic [ref=e222]:
+                  - paragraph [ref=e223]: Total Cost
+                  - paragraph [ref=e224]: $829,683.6
+                - generic [ref=e225]:
+                  - paragraph [ref=e226]: Market Value
+                  - generic [ref=e227]:
+                    - paragraph [ref=e228]: $901,830
+                    - img [ref=e229]
+              - generic [ref=e232]:
+                - link "View Details" [ref=e233]:
+                  - /url: /deals/deal_bbb5dc38a45c
+                  - button "View Details" [ref=e234]
+                - button "Cancel" [ref=e235]
+                - button "Accept Deal" [ref=e236]
+            - generic [ref=e243] [cursor=pointer]:
+              - generic [ref=e244]:
+                - generic [ref=e245]:
+                  - generic [ref=e246]:
+                    - img "BTC" [ref=e248]
+                    - img [ref=e250]
+                  - generic [ref=e252]:
+                    - heading "Bitcoin" [level=3] [ref=e253]
+                    - paragraph [ref=e254]: "10"
+                - generic [ref=e255]:
+                  - generic [ref=e256]: OPEN
+                  - generic [ref=e257]: "-8%"
+              - generic [ref=e258]:
+                - img [ref=e259]
+                - generic [ref=e262]: "LOCK: 4 weeks"
+              - generic [ref=e263]:
+                - generic [ref=e264]:
+                  - paragraph [ref=e265]: Total Cost
+                  - paragraph [ref=e266]: $829,683.6
+                - generic [ref=e267]:
+                  - paragraph [ref=e268]: Market Value
+                  - generic [ref=e269]:
+                    - paragraph [ref=e270]: $901,830
+                    - img [ref=e271]
+              - generic [ref=e274]:
+                - link "View Details" [ref=e275]:
+                  - /url: /deals/deal_435d908c06d1
+                  - button "View Details" [ref=e276]
+                - button "Cancel" [ref=e277]
+                - button "Accept Deal" [ref=e278]
+  - alert [ref=e280]
+```

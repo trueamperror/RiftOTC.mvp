@@ -48,13 +48,33 @@ app = FastAPI(
 )
 
 # CORS configuration
+mapped_origins = []
+
+# 1. Frontend URL from Env (Primary Production Origin)
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    mapped_origins.append(frontend_url)
+
+# 2. Additional Origins from Env (Comma separated)
+additional_origins = os.getenv("ALLOWED_ORIGINS")
+if additional_origins:
+    mapped_origins.extend([origin.strip() for origin in additional_origins.split(",")])
+
+# 3. Localhost Fallbacks (Only if explicitly allowed or in debug mode)
+# We purposely do NOT auto-add localhost unless specified, to respect "Production First"
+# But for convenience during transition, we check a flag or just add common defaults IF list is empty
+if not mapped_origins:
+    # Default to localhost if nothing configured (Local Dev Mode implicit)
+    mapped_origins = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ]
+
+print(f"🔒 CORS Allowed Origins: {mapped_origins}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "https://*.vercel.app",
-    ],
+    allow_origins=mapped_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

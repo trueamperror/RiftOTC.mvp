@@ -5,9 +5,26 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DealCard } from "@/components/DealCard";
-import { getDeals, acceptDeal } from "@/lib/api";
+import { DealCard } from "@/components/deal-card";
+import { getDeals, acceptDeal, cancelDeal } from "@/lib/api";
 import { Deal } from "@/types";
+
+function formatCurrency(num: number): string {
+  if (num < 0.01 && num > 0) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 6,
+      maximumFractionDigits: 6,
+    }).format(num);
+  }
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(num);
+}
 
 export default function DashboardPage() {
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -41,6 +58,17 @@ export default function DashboardPage() {
       loadDeals(activeTab);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to accept deal");
+    }
+  };
+
+  const handleCancelDeal = async (dealId: string, sellerAddress: string) => {
+    try {
+      if (confirm("Are you sure you want to cancel this deal?")) {
+        await cancelDeal(dealId, sellerAddress);
+        loadDeals(activeTab);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to cancel deal");
     }
   };
 
@@ -163,8 +191,18 @@ export default function DashboardPage() {
                 {deals.map((deal) => (
                   <DealCard
                     key={deal.id}
-                    deal={deal}
-                    onAccept={deal.status === "open" ? handleAcceptDeal : undefined}
+                    dealId={deal.id}
+                    token={deal.ai_score?.token_name || deal.token_symbol}
+                    symbol={deal.token_symbol}
+                    amount={deal.token_amount.toLocaleString()}
+                    discount={deal.discount}
+                    totalCost={formatCurrency(deal.total_cost)}
+                    marketValue={formatCurrency(deal.market_value)}
+                    status={deal.status === "funded" ? "active" : deal.status as any}
+                    lockPeriod={deal.lock_period + " weeks"}
+                    image={deal.ai_score?.image}
+                    onAccept={deal.status === "open" ? () => handleAcceptDeal(deal.id) : undefined}
+                    onCancel={deal.status === "open" ? () => handleCancelDeal(deal.id, deal.seller_address) : undefined}
                   />
                 ))}
               </div>

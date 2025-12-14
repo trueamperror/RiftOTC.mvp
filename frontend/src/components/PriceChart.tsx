@@ -49,8 +49,8 @@ export function PriceChart({ data, symbol, className }: PriceChartProps) {
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="h-[200px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
+                <div className="h-[200px] w-full min-w-0">
+                    <ResponsiveContainer width="99%" height="100%">
                         <AreaChart data={chartData}>
                             <defs>
                                 <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">

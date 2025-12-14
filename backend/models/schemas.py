@@ -97,12 +97,12 @@ class TokenData(BaseModel):
     name: str
     symbol: str
     current_price: float
-    market_cap: float
-    total_volume: float
-    price_change_percentage_24h: float
+    market_cap: Optional[float] = None
+    total_volume: Optional[float] = None
+    price_change_percentage_24h: Optional[float] = None
     price_change_percentage_7d: Optional[float] = None
     price_change_percentage_30d: Optional[float] = None
-    ath: float
-    ath_change_percentage: float
+    ath: Optional[float] = None
+    ath_change_percentage: Optional[float] = None
     market_cap_rank: Optional[int] = None
     image: Optional[str] = None

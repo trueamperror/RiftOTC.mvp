@@ -79,7 +79,8 @@ async def create_new_deal(request: CreateDealRequest):
             recommendation=analysis_result["recommendation"],
             expected_return=ExpectedReturn(**analysis_result["expected_return"]),
             key_risks=analysis_result["key_risks"],
-            reasoning=analysis_result["reasoning"]
+            reasoning=analysis_result["reasoning"],
+            image=token_data.get("image")
         )
     except Exception as e:
         print(f"Failed to get AI analysis: {e}")

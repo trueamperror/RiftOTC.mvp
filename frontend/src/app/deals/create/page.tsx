@@ -20,6 +20,14 @@ const lockPeriods = [
 ];
 
 function formatCurrency(num: number): string {
+  if (num < 0.01 && num > 0) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 6,
+      maximumFractionDigits: 6,
+    }).format(num);
+  }
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -147,10 +155,14 @@ function CreateDealContent() {
             {selectedToken && tokenData && (
               <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                    <span className="font-bold text-primary text-sm">
-                      {tokenData.symbol.charAt(0).toUpperCase()}
-                    </span>
+                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+                    {tokenData.image ? (
+                      <img src={tokenData.image} alt={tokenData.symbol} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="font-bold text-primary text-sm">
+                        {tokenData.symbol.charAt(0).toUpperCase()}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <p className="font-medium">{tokenData.name}</p>
@@ -168,8 +180,14 @@ function CreateDealContent() {
           </div>
 
           {/* Amount */}
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount of Tokens</Label>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="amount">Amount of Tokens</Label>
+              <span className="text-sm font-mono text-muted-foreground">
+                {parseInt(amount).toLocaleString()} tokens
+              </span>
+            </div>
+
             <Input
               id="amount"
               type="number"
@@ -177,6 +195,15 @@ function CreateDealContent() {
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter amount"
               min="0"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
+
+            <Slider
+              value={[parseFloat(amount) || 0]}
+              onValueChange={(value) => setAmount(value[0].toString())}
+              min={0}
+              max={100000} // Dynamic max based on balance would be better, but fixed for now
+              step={100}
             />
           </div>
 
@@ -196,6 +223,9 @@ function CreateDealContent() {
                   )}
                 >
                   <div className="font-semibold">{period.label}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {period.value === 1 ? "Min" : period.value === 8 ? "Max" : "Mid"} Lock
+                  </div>
                 </button>
               ))}
             </div>

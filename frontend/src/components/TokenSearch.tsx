@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Input } from "@/components/ui/input";
+import { CyberInput } from "@/components/cyber-input";
+import Image from "next/image";
 import { searchTokens, getTrendingTokens } from "@/lib/api";
 import { TokenSearchResult } from "@/types";
 import { cn } from "@/lib/utils";
@@ -101,11 +102,11 @@ export function TokenSearch({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <Input
+      <CyberInput
         ref={inputRef}
         type="text"
         value={query}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setQuery(e.target.value);
           setIsOpen(true);
         }}
@@ -113,6 +114,7 @@ export function TokenSearch({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="w-full"
+        icon
       />
 
       {showDropdown && (
@@ -138,11 +140,14 @@ export function TokenSearch({
                   )}
                 >
                   {token.thumb ? (
-                    <img
-                      src={token.thumb}
-                      alt={token.symbol}
-                      className="w-6 h-6 rounded-full"
-                    />
+                    <div className="relative w-6 h-6 rounded-full overflow-hidden">
+                      <Image
+                        src={token.thumb}
+                        alt={token.symbol}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
                       <span className="text-xs font-medium text-primary">

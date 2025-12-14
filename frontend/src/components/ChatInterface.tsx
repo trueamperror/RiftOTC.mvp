@@ -16,7 +16,7 @@ interface Message {
     content: string;
 }
 
-export function ChatInterface({ tokenContext, apiBaseUrl = "http://localhost:8000" }: ChatInterfaceProps) {
+export function ChatInterface({ tokenContext, apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000" }: ChatInterfaceProps) {
     const [messages, setMessages] = useState<Message[]>([
         {
             role: "assistant",

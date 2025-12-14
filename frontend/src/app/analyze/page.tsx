@@ -17,6 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Terminal, Cpu, ArrowRight, Shield, Zap } from "lucide-react";
 import { StatsCard } from "@/components/stats-card";
 import NextImage from "next/image";
+import { CyberLoader } from "@/components/cyber-loader";
 
 const lockPeriodOptions = [
   { label: "1 Week", value: "1", description: "Lower risk, lower discount", riskLevel: "low" as const },
@@ -133,6 +134,12 @@ export default function AnalyzePage() {
           <Alert variant="destructive" className="max-w-2xl mx-auto bg-destructive/10 border-destructive/50 text-destructive">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
+        )}
+
+        {isLoading && (
+          <div className="py-12 flex justify-center animate-in fade-in zoom-in duration-300">
+            <CyberLoader text="ANALYZING_MARKET_DATA..." size="xl" />
+          </div>
         )}
 
         {/* Analysis Results */}
@@ -306,7 +313,7 @@ export default function AnalyzePage() {
             <div id="chat-interface-section" className="flex justify-center">
               {!showChat ? (
                 <CyberButton
-                  variant="secondary"
+                  variant="primary"
                   size="lg"
                   icon={<Terminal className="w-4 h-4" />}
                   onClick={() => setShowChat(true)}

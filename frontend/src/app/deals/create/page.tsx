@@ -12,6 +12,8 @@ import { TokenSearch } from "@/components/TokenSearch";
 import { createDeal, getToken, analyzeToken, getSuggestedDiscount } from "@/lib/api";
 import { TokenData, TokenSearchResult, TokenAnalysis } from "@/types";
 import { cn } from "@/lib/utils";
+import { CyberLoader } from "@/components/cyber-loader";
+import { CheckCircle } from "lucide-react";
 
 const lockPeriods = [
   { value: 1, label: "1 Week" },
@@ -100,6 +102,10 @@ function CreateDealContent() {
     }
   };
 
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // ... (rest of state items are fine, inserting showSuccess near them would be cleaner but this is safe)
+
   const handleSubmit = async () => {
     if (!selectedToken || !tokenData) return;
 
@@ -119,10 +125,12 @@ function CreateDealContent() {
         lock_period: lockPeriod as 1 | 4 | 8,
       });
 
-      router.push("/?created=true");
+      setShowSuccess(true);
+      setTimeout(() => {
+        router.push("/?created=true");
+      }, 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create deal");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -322,13 +330,23 @@ function CreateDealContent() {
           </CardContent>
         </Card>
       )}
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="relative">
+            <div className="absolute inset-0 bg-green-500/20 blur-3xl rounded-full animate-pulse" />
+            <CheckCircle className="w-24 h-24 text-green-500 animate-bounce relative z-10" />
+          </div>
+          <h2 className="text-3xl font-bold mt-8 neon-text text-green-500">DEAL_DEPLOYED_SUCCESSFULLY</h2>
+          <p className="text-muted-foreground mt-2 font-mono">Redirecting to Dashboard...</p>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function CreateDealPage() {
   return (
-    <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
+    <Suspense fallback={<div className="h-[50vh] flex items-center justify-center"><CyberLoader text="INITIALIZING_MODULE..." size="lg" /></div>}>
       <CreateDealContent />
     </Suspense>
   );

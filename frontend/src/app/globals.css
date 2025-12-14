@@ -140,8 +140,9 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
 }
 
@@ -150,6 +151,7 @@
   0% {
     transform: translateY(-100%);
   }
+
   100% {
     transform: translateY(100vh);
   }
@@ -157,19 +159,24 @@
 
 /* Glitch effect */
 @keyframes glitch {
+
   0%,
   100% {
     transform: translate(0);
   }
+
   20% {
     transform: translate(-2px, 2px);
   }
+
   40% {
     transform: translate(-2px, -2px);
   }
+
   60% {
     transform: translate(2px, 2px);
   }
+
   80% {
     transform: translate(2px, -2px);
   }
@@ -177,11 +184,13 @@
 
 /* Pulse glow */
 @keyframes pulse-glow {
+
   0%,
   100% {
     opacity: 1;
     filter: brightness(1);
   }
+
   50% {
     opacity: 0.8;
     filter: brightness(1.2);
@@ -194,12 +203,15 @@
     transform: translateY(-100%);
     opacity: 0;
   }
+
   10% {
     opacity: 1;
   }
+
   90% {
     opacity: 1;
   }
+
   100% {
     transform: translateY(100vh);
     opacity: 0;
@@ -208,6 +220,7 @@
 
 /* Neon flicker */
 @keyframes neon-flicker {
+
   0%,
   19%,
   21%,
@@ -218,6 +231,7 @@
   100% {
     text-shadow: 0 0 4px currentColor, 0 0 11px currentColor, 0 0 19px currentColor;
   }
+
   20%,
   24%,
   55% {

@@ -139,9 +139,9 @@ export default function AnalyzePage() {
         {analysis && (
           <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <CyberCard glowColor="cyan" className="overflow-hidden">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8">
                 <div className="flex items-center gap-4 w-full md:w-auto">
-                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border-2 border-primary/50 shadow-[0_0_15px_rgba(0,212,255,0.3)]">
+                  <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/20 flex-shrink-0 flex items-center justify-center overflow-hidden border-2 border-primary/50 shadow-[0_0_15px_rgba(0,212,255,0.3)]">
                     {analysis.image && (
                       <NextImage
                         src={analysis.image}
@@ -158,9 +158,9 @@ export default function AnalyzePage() {
                     )}
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold font-mono">
+                    <h2 className="text-xl md:text-3xl font-bold font-mono break-all line-clamp-1">
                       {analysis.token_name}
-                      <span className="text-primary ml-2 text-xl">
+                      <span className="text-primary ml-2 text-base md:text-xl">
                         {analysis.token_symbol.toUpperCase()}
                       </span>
                     </h2>
@@ -180,13 +180,15 @@ export default function AnalyzePage() {
                     </div>
                   </div>
                 </div>
-                <RiskBadge
-                  recommendation={analysis.recommendation}
-                  size="lg"
-                />
+                <div className="w-full md:w-auto flex justify-start md:justify-end">
+                  <RiskBadge
+                    recommendation={analysis.recommendation}
+                    size="lg"
+                  />
+                </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Score Breakdown */}
                 <div>
                   <h3 className="font-mono font-semibold mb-4 text-primary flex items-center gap-2">
@@ -204,12 +206,12 @@ export default function AnalyzePage() {
                   <div className="relative p-6 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 text-center">
                     <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary/50" />
                     <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary/50" />
-                    <div className="text-sm font-mono text-muted-foreground mb-2 uppercase tracking-widest">
+                    <div className="text-xs md:text-sm font-mono text-muted-foreground mb-2 uppercase tracking-widest">
                       AI Confidence Score
                     </div>
-                    <div className="text-5xl font-bold text-primary font-mono tabular-nums">
+                    <div className="text-4xl md:text-5xl font-bold text-primary font-mono tabular-nums">
                       {analysis.scores.overall.toFixed(1)}
-                      <span className="text-xl text-primary/50">/10</span>
+                      <span className="text-lg md:text-xl text-primary/50">/10</span>
                     </div>
                   </div>
 
@@ -249,30 +251,30 @@ export default function AnalyzePage() {
 
               {/* Expected Returns */}
               <div className="mt-8">
-                <h3 className="font-mono font-semibold mb-4 text-primary flex items-center gap-2">
+                <h3 className="font-mono font-semibold mb-4 text-primary flex items-center gap-2 text-sm md:text-base">
                   <Zap className="w-4 h-4" /> Expected Return ({lockPeriodOptions.find((p: any) => p.value === lockPeriod)?.label} lock)
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 rounded-lg bg-red-500/5 border border-red-500/20 text-center relative overflow-hidden group">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-3 md:p-4 rounded-lg bg-red-500/5 border border-red-500/20 text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="text-xs font-mono text-muted-foreground uppercase mb-1">Bear Case</div>
-                    <div className="text-xl font-bold font-mono text-red-400">
+                    <div className="text-lg md:text-xl font-bold font-mono text-red-400">
                       {analysis.expected_return.low > 0 ? "+" : ""}
                       {analysis.expected_return.low.toFixed(1)}%
                     </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/20 text-center relative overflow-hidden group">
+                  <div className="p-3 md:p-4 rounded-lg bg-primary/5 border border-primary/20 text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="text-xs font-mono text-primary uppercase mb-1">Expected</div>
-                    <div className="text-2xl font-bold font-mono text-primary animate-pulse-glow">
+                    <div className="text-xl md:text-2xl font-bold font-mono text-primary animate-pulse-glow">
                       {analysis.expected_return.mid > 0 ? "+" : ""}
                       {analysis.expected_return.mid.toFixed(1)}%
                     </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-green-500/5 border border-green-500/20 text-center relative overflow-hidden group">
+                  <div className="p-3 md:p-4 rounded-lg bg-green-500/5 border border-green-500/20 text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="text-xs font-mono text-muted-foreground uppercase mb-1">Bull Case</div>
-                    <div className="text-xl font-bold font-mono text-green-400">
+                    <div className="text-lg md:text-xl font-bold font-mono text-green-400">
                       +{analysis.expected_return.high.toFixed(1)}%
                     </div>
                   </div>
@@ -320,10 +322,10 @@ export default function AnalyzePage() {
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4 sm:pt-8 pb-12">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 sm:pt-8 pb-12 w-full">
               <CyberButton
                 variant="outline"
-                className="flex-1 min-h-[48px]"
+                className="w-full sm:flex-1 min-h-[48px]"
                 onClick={() => {
                   setSelectedToken(null);
                   setAnalysis(null);
@@ -334,7 +336,7 @@ export default function AnalyzePage() {
                 Analyze Different Token
               </CyberButton>
               <CyberButton
-                className="flex-1 min-h-[48px]"
+                className="w-full sm:flex-1 min-h-[48px]"
                 variant="primary"
                 icon={<Zap className="w-4 h-4" />}
               >
@@ -343,6 +345,7 @@ export default function AnalyzePage() {
                 </a>
               </CyberButton>
             </div>
+
           </div>
         )
         }

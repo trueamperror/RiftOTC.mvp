@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
 from models.schemas import TokenData, TokenSearchResult
-from services.coingecko import get_token_data, search_tokens, get_trending_tokens
+from services.coingecko import get_token_data, search_tokens, get_trending_tokens, RateLimitError
 from services.deal_calculator import calculate_deal_metrics, suggest_discount
 
 router = APIRouter()
@@ -40,12 +40,18 @@ async def get_token_endpoint(token_id: str):
 
     Use the CoinGecko token ID (e.g., 'bitcoin', 'ethereum', 'uniswap').
     """
-    token = await get_token_data(token_id)
+    try:
+        token = await get_token_data(token_id)
+    except RateLimitError:
+        raise HTTPException(
+            status_code=429,
+            detail="External API rate limit reached. Please wait a moment and try again."
+        )
 
     if not token:
         raise HTTPException(
             status_code=404,
-            detail=f"Token '{token_id}' not found"
+            detail=f"Token '{token_id}' not found. Please check the token symbol or ID."
         )
 
     return TokenData(**token)

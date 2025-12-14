@@ -28,13 +28,13 @@ async def analyze_token_endpoint(request: AnalyzeRequest):
     except RateLimitError:
         raise HTTPException(
             status_code=429,
-            detail="CoinGecko API Rate Limit. Please wait asking again."
+            detail="CoinGecko API Rate Limit. Please wait a moment and try again."
         )
 
     if not token_data:
         raise HTTPException(
             status_code=404,
-            detail=f"Token '{request.token_id}' not found. Please use the CoinGecko token ID."
+            detail=f"Token '{request.token_id}' not found. Please check the ID."
         )
 
     # Get AI analysis

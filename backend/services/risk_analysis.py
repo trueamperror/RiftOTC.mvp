@@ -26,7 +26,7 @@ class RiskScorer:
         mcap = self.token.get('market_cap') or 0
         volume = self.token.get('total_volume') or 0
 
-        if mcap == 0:
+        if mcap <= 0:
             return 3.5  # Max risk if no mcap data
 
         ratio = volume / mcap

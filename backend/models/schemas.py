@@ -6,7 +6,7 @@ from datetime import datetime
 # Token Analysis Models
 class AnalyzeRequest(BaseModel):
     token_id: str
-    lock_period: Literal[1, 4, 8] = 4
+    lock_period: int = Field(4, ge=1, le=8)
 
 
 class ScoreBreakdown(BaseModel):
@@ -74,7 +74,7 @@ class Deal(BaseModel):
     token_amount: float
     price_per_token: float
     discount: float
-    lock_period: Literal[1, 4, 8]
+    lock_period: int = Field(ge=1, le=8)
     total_cost: float
     market_value: float
     created_at: datetime

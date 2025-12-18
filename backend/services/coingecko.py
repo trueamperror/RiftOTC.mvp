@@ -45,29 +45,41 @@ async def get_token_data(token_id: str) -> Optional[dict]:
                 return None
 
             data = response.json()
-            if not data:
+            if not data or not isinstance(data, list):
                 return None
 
             token = data[0]
+            
+            # Fetch additional details (developer/community data)
+            # This is slow but necessary for fundamental analysis
+            try:
+                details = await get_token_details(token_id)
+            except Exception as e:
+                print(f"Error fetching token details: {e}")
+                details = {}
+            
+            # Ensure details is a dict
+            details = details or {}
+            
             formatted_data = {
                 "id": token["id"],
                 "name": token["name"],
                 "symbol": token["symbol"],
                 "current_price": token.get("current_price", 0),
-                "market_cap": token.get("market_cap", 0),
+                "market_cap": token.get("market_cap") or 0,
                 "market_cap_rank": token.get("market_cap_rank"),
                 "fully_diluted_valuation": token.get("fully_diluted_valuation"),
                 "circulating_supply": token.get("circulating_supply"),
                 "total_supply": token.get("total_supply"),
-                "total_volume": token.get("total_volume", 0),
-                "price_change_percentage_24h": token.get("price_change_percentage_24h", 0),
-                "price_change_percentage_7d": token.get("price_change_percentage_7d_in_currency"),
-                "price_change_percentage_30d": token.get("price_change_percentage_30d_in_currency"),
-                "ath": token.get("ath", 0),
-                "ath_change_percentage": token.get("ath_change_percentage", 0),
+                "total_volume": token.get("total_volume") or 0,
+                "price_change_percentage_24h": token.get("price_change_percentage_24h") or 0,
+                "price_change_percentage_7d": token.get("price_change_percentage_7d_in_currency") or 0,
+                "price_change_percentage_30d": token.get("price_change_percentage_30d_in_currency") or 0,
+                "ath": token.get("ath") or 0,
+                "ath_change_percentage": token.get("ath_change_percentage") or 0,
                 "image": token.get("image"),
-                "developer_data": token.get("developer_data"),
-                "community_data": token.get("community_data"),
+                "developer_data": details.get("developer_data"),
+                "community_data": details.get("community_data"),
                 "sparkline_in_7d": token.get("sparkline_in_7d", {}).get("price", [])
             }
             
@@ -75,6 +87,8 @@ async def get_token_data(token_id: str) -> Optional[dict]:
             TOKEN_CACHE[token_id] = (formatted_data, time.time())
             
             return formatted_data
+        except RateLimitError:
+            raise
         except Exception as e:
             print(f"CoinGecko API error: {e}")
             return None
@@ -91,15 +105,21 @@ async def get_token_details(token_id: str) -> Optional[dict]:
                     "tickers": "false",
                     "market_data": "true",
                     "community_data": "true",
-                    "developer_data": "true"
+                    "developer_data": "true",
+                    "sparkline": "true"
                 },
                 timeout=10.0
             )
+
+            if response.status_code == 429:
+                raise RateLimitError("CoinGecko Rate Limit")
 
             if response.status_code != 200:
                 return None
 
             return response.json()
+        except RateLimitError:
+            raise
         except Exception as e:
             print(f"CoinGecko API error: {e}")
             return None

@@ -121,12 +121,16 @@ async def suggest_discount_endpoint(
             detail=f"Token '{token_id}' not found"
         )
 
-    volatility_30d = abs(token.get("price_change_percentage_30d", 0) or 0)
+    # Fallback to a simple volatility proxy if no full technical analysis is available here
+    # 30d change is NOT volatility. We use a combination of 7d and 30d absolute moves.
+    price_7d = abs(token.get("price_change_percentage_7d", 0) or 0)
+    price_30d = abs(token.get("price_change_percentage_30d", 0) or 0)
+    volatility_proxy = (price_7d * 2 + price_30d) / 2
 
     suggestion = suggest_discount(
         lock_period=lock_period,
         risk_score=risk_score,
-        volatility_30d=volatility_30d
+        volatility_30d=volatility_proxy
     )
 
     return {

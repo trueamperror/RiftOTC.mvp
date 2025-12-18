@@ -32,7 +32,7 @@ export function LockPeriodSelector({ options, selected, onChange }: LockPeriodSe
     return (
         <div className="space-y-2">
             <label className="text-xs font-mono text-muted-foreground uppercase tracking-wider">Lock Period</label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {options.map((option) => {
                     const Icon = riskIcons[option.riskLevel as keyof typeof riskIcons] || Lock
                     const isSelected = selected === option.value

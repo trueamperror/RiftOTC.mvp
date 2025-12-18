@@ -20,9 +20,14 @@ import NextImage from "next/image";
 import { CyberLoader } from "@/components/cyber-loader";
 
 const lockPeriodOptions = [
-  { label: "1 Week", value: "1", description: "Lower risk, lower discount", riskLevel: "low" as const },
+  { label: "1 Week", value: "1", description: "Minimal exposure", riskLevel: "low" as const },
+  { label: "2 Weeks", value: "2", description: "Short-term lock", riskLevel: "low" as const },
+  { label: "3 Weeks", value: "3", description: "Standard lock", riskLevel: "medium" as const },
   { label: "4 Weeks", value: "4", description: "Balanced risk/reward", riskLevel: "medium" as const },
-  { label: "8 Weeks", value: "8", description: "Higher discount, more exposure", riskLevel: "high" as const },
+  { label: "5 Weeks", value: "5", description: "Extended exposure", riskLevel: "medium" as const },
+  { label: "6 Weeks", value: "6", description: "Significant lock", riskLevel: "high" as const },
+  { label: "7 Weeks", value: "7", description: "High duration", riskLevel: "high" as const },
+  { label: "8 Weeks", value: "8", description: "Maximum exposure", riskLevel: "high" as const },
 ];
 
 function formatCurrency(num: number): string {

@@ -15,11 +15,10 @@ import { cn } from "@/lib/utils";
 import { CyberLoader } from "@/components/cyber-loader";
 import { CheckCircle } from "lucide-react";
 
-const lockPeriods = [
-  { value: 1, label: "1 Week" },
-  { value: 4, label: "4 Weeks" },
-  { value: 8, label: "8 Weeks" },
-];
+const lockPeriods = Array.from({ length: 8 }, (_, i) => ({
+  value: i + 1,
+  label: `${i + 1} Week${i === 0 ? "" : "s"}`
+}));
 
 function formatCurrency(num: number): string {
   if (num < 0.01 && num > 0) {
@@ -63,7 +62,7 @@ function CreateDealContent() {
     }
     if (lockParam) {
       const lock = parseInt(lockParam);
-      if ([1, 4, 8].includes(lock)) {
+      if (lock >= 1 && lock <= 8) {
         setLockPeriod(lock);
       }
     }
@@ -122,7 +121,7 @@ function CreateDealContent() {
         token_amount: parseFloat(amount),
         price_per_token: pricePerToken,
         discount: discount,
-        lock_period: lockPeriod as 1 | 4 | 8,
+        lock_period: lockPeriod,
       });
 
       setShowSuccess(true);
@@ -218,22 +217,19 @@ function CreateDealContent() {
           {/* Lock Period */}
           <div className="space-y-2">
             <Label>Lock Period</Label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
               {lockPeriods.map((period) => (
                 <button
                   key={period.value}
                   onClick={() => setLockPeriod(period.value)}
                   className={cn(
-                    "p-3 rounded-lg border text-center transition-colors",
+                    "p-2 rounded border text-center transition-colors text-xs font-mono",
                     lockPeriod === period.value
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/50"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border hover:border-primary/50 text-muted-foreground"
                   )}
                 >
-                  <div className="font-semibold">{period.label}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {period.value === 1 ? "Min" : period.value === 8 ? "Max" : "Mid"} Lock
-                  </div>
+                  <div className="font-bold">{period.value}w</div>
                 </button>
               ))}
             </div>

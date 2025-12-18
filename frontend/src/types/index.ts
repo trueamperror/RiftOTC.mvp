@@ -64,7 +64,7 @@ export interface Deal {
   token_amount: number;
   price_per_token: number;
   discount: number;
-  lock_period: 1 | 4 | 8;
+  lock_period: number;
   total_cost: number;
   market_value: number;
   created_at: string;
@@ -80,7 +80,7 @@ export interface CreateDealRequest {
   token_amount: number;
   price_per_token: number;
   discount: number;
-  lock_period: 1 | 4 | 8;
+  lock_period: number;
 }
 
 export interface TokenSearchResult {

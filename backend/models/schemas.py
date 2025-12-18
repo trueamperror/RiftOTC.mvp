@@ -57,7 +57,7 @@ class CreateDealRequest(BaseModel):
     token_amount: float = Field(gt=0)
     price_per_token: float = Field(gt=0)
     discount: float = Field(ge=0, le=50)
-    lock_period: Literal[1, 4, 8] = 4
+    lock_period: int = Field(4, ge=1, le=8)
 
 
 class AcceptDealRequest(BaseModel):

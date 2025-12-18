@@ -88,11 +88,11 @@ To deliver the V1 Product (moving from MVP to Production), the following team st
 
 | Role | Count | Responsibilities |
 |------|-------|------------------|
-| **Senior Frontend Engineer** | 1 | React/Next.js architecture, "CyberUI" implementation, Web3 state management (Wallet integration). |
-| **Backend/AI Engineer** | 1 | Python/FastAPI, LLM prompt engineering, Data pipeline optimization (CoinGecko/On-chain data). |
-| **Smart Contract Engineer** | 1 | **Critical**. Writing secure Escrow contracts (Solidity/Rust), Auditing, Gas optimization. |
-| **Product Designer** | 0.5 - 1 | UI/UX high-fidelity designs (Figma), maintaining the "Cyberpunk" aesthetic key to brand identity. |
-| **QA / Tester** | 0.5 | Automated testing (Playwright), Smart contract integration testing. |
+| **Senior Frontend Engineer** | 1 - 2 | React/Next.js architecture, UI implementation, Web3 state management (Wallet integration). |
+| **Backend/AI Engineer** | 1 - 2 | Python/FastAPI, LLM prompt engineering, Data pipeline optimization (CoinGecko/On-chain data). |
+| **Smart Contract Engineer** | 1 - 2 | **Critical**. Writing secure Escrow contracts (Solidity/Rust), Auditing, Gas optimization. |
+| **Product Designer** | 1 | UI/UX high-fidelity designs (Figma), maintaining the brand identity. |
+| **QA / Tester** | 3 | Automated testing, Smart contract integration testing. |
 
 ### **Rationale**
 -   **1 Backend vs. 1 Contract**: The logic is heavy on off-chain AI analysis (Backend) and on-chain settlement (Contract). These are distinct, specialized skill sets.
